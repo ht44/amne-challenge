@@ -1,0 +1,21 @@
+{
+  "name": "amne_challenge",
+  "version": "1.0.0",
+  "description": "Coding challenge for Amne Software Engineer position",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "amne-challenge"
+  },
+  "author": "Hayden Turek",
+  "license": "ISC",
+  "devDependencies": {
+    "mocha": "^3.5.0"
+  },
+  "dependencies": {
+    "performance-now": "^2.1.0"
+  }
+}
