@@ -1,7 +1,8 @@
 const fs = require('fs');
 
 if (require.main === module) {
-  let [inputPath, outputPath] = process.argv.slice(2);
+  let inputPath = process.argv[2] || './mock/input.txt',
+      outputPath = process.argv[3] || './output/output.txt';
   findTrends(inputPath, outputPath);
 }
 
