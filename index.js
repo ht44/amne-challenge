@@ -2,44 +2,61 @@ const fs = require('fs');
 
 if (require.main === module) {
   let inputPath = process.argv[2] || './mock/input.txt',
-      outputPath = process.argv[3] || './output/output.txt';
-  findTrends(inputPath, outputPath);
+      outputPath = process.argv[3];
+
+  if (outputPath) {
+    findTrends(inputPath, outputPath);
+  } else {
+    findTrends(inputPath);
+  }
 }
 
 function findTrends(inputPath, outputPath) {
 
   let result = [],
       contents = fs.readFileSync(inputPath, 'utf8').split('\n'),
-      averages = contents[1],
-      [days, wind] = contents[0].split(' ');
+      averages = contents[1].split(' ').map(Number),
+      [days, wind] = contents[0].split(' '),
+      increasing = 0,
+      decreasing = 0;
 
   contents = null;
 
   for (let i = 0, j = wind - 1; j < days; i++, j++) {
 
-    let increasing = 0,
-        decreasing = 0;
+    for (let l = i; l < j; l++) {
 
-    for (let k = i; k <= j; k++) {
-      if (averages[k + 1] > averages[k]) {
-        increasing++;
-      } else if (averages[k + 1] < averages[k]) {
-        decreasing++;
+      let k = l + 1;
+
+      if (averages[k] > averages[k - 1]) {
+        while (averages[k] > averages[k - 1] && k <= j) {
+          increasing++;
+          k++
+        }
+      } else if (averages[k] < averages[k - 1]) {
+        while (averages[k] < averages[k - 1] && k <= j) {
+          decreasing++;
+          k++;
+        }
       }
-    }
 
-    if (decreasing === 0) {
-      increasing++;
-    } else if (increasing === 0) {
-      decreasing++;
     }
 
     result.push(increasing - decreasing);
-
+    increasing = 0;
+    decreasing = 0;
+    
   }
 
-  fs.writeFileSync(outputPath, result.join('\n'));
+  if (outputPath) {
+    fs.writeFileSync(outputPath, result.join('\n'));
+  } else {
+    result.forEach(value => {
+      console.log(value);
+    });
+  }
 
+  // for testing
   return result;
 
 }
